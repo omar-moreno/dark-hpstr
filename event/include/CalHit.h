@@ -1,31 +1,26 @@
 /**
- * @file CalorimeterHit.h
+ * @file CalHit.h
  * @brief Class that encapsulate calorimeter hit information
  * @author Omar Moreno, SLAC National Accelerator Laboratory
  */
 
-#ifndef __CALORIMETER_HIT_H__
-#define __CALORIMETER_HIT_H__
-
-//----------------//
-//   C++ StdLib   //
-//----------------//
-#include <vector>
+#ifndef _CALORIMETER_HIT_H_
+#define _CALORIMETER_HIT_H_
 
 //----------//
 //   ROOT   //
 //----------//
 #include <TObject.h>
 
-class CalorimeterHit : public TObject { 
-
-    public:
+class CalHit : public TObject { 
+    
+    public:    
 
         /** Constructor */
-        CalorimeterHit(); 
+        CalHit(); 
 
         /** Destructor */
-        ~CalorimeterHit();
+        ~CalHit();
 
         /** Reset the hit object */ 
         void Clear(Option_t* option=""); 
@@ -61,10 +56,8 @@ class CalorimeterHit : public TObject {
         /** @return The crystal indices. */ 
         std::vector<int> getCrystalIndices() const { return { index_x_, index_y_ }; }
 
-        ClassDef(CalorimeterHit, 1);
-
     private: 
-
+        
         /** The crystal index along x. */
         int index_x_{-9999};
 
@@ -76,7 +69,8 @@ class CalorimeterHit : public TObject {
 
         /** The time of the hit in ns. */
         double time_{0};
+        
+        ClassDef(CalHit, 1);
+};
 
-}; // CalorimeterHit
-
-#endif // _CALORIMETER_HIT_H_
+#endif

@@ -1,11 +1,11 @@
 /**
- * @file CalorimeterCluster.cxx
+ * @file CalCluster.cxx
  * @brief Class used to encapsulate calorimeter cluster information.
  * @author Omar Moreno, SLAC National Accelerator Laboratory
  */
 
-#ifndef _CALORIMETER_CLUSTER_H__
-#define _CALORIMETER_CLUSTER_H__
+#ifndef _CAL_CLUSTER_H__
+#define _CAL_CLUSTER_H__
 
 //----------------//
 //   C++ StdLib   //
@@ -20,15 +20,15 @@
 #include <TRefArray.h>
 #include <TRef.h>
 
-class CalorimeterCluster : public TObject { 
+class CalCluster : public TObject { 
 
     public:
 
         /** Constructor */
-        CalorimeterCluster();
+        CalCluster();
         
         /** Destructor */
-        ~CalorimeterCluster();
+        ~CalCluster();
 
         /** Reset the Cluster object */ 
         void Clear(Option_t *option="");
@@ -36,7 +36,7 @@ class CalorimeterCluster : public TObject {
         /**
          * Add a reference to a calorimeter hit composing this cluster.
          *
-         * @param hit : Calorimeter hit composing with this cluster
+         * @param hit : Cal hit composing with this cluster
          */
 		void addHit(TObject* hit); 
 
@@ -86,7 +86,7 @@ class CalorimeterCluster : public TObject {
         /** @return The seed hit of the cluster. */
         TObject* getSeed() const { return static_cast<TObject*>(seed_hit_.GetObject()); }; 
         
-        ClassDef(CalorimeterCluster, 1);	
+        ClassDef(CalCluster, 1);	
 
     private:
 
@@ -114,6 +114,6 @@ class CalorimeterCluster : public TObject {
         /** The cluster time. */ 
         double time_{-9999};
         
-}; // CalorimeterCluster
+}; // CalCluster
 
 #endif // _CALORIMETER_CLUSTER_H_
