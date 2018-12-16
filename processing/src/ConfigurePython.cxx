@@ -64,8 +64,12 @@ ConfigurePython::ConfigurePython(const std::string& python_script, char* args[],
     PyObject* py_list = nullptr; 
     PyObject* p_process = nullptr; 
 
-    // Load the python script. 
+    // Load the python script.
     script = PyImport_ImportModule(cmd.c_str());
+    if(script == nullptr){
+        std::cout << "The program could not load the Python configuration:" << cmd << ".\n";
+        std::cout << "Please make sure your PYTHONPATH is set to find the HpstrConf.py file.\n";
+    }
     Py_DECREF(script);
   
     try { 
