@@ -40,7 +40,7 @@ int main(int argc, char **argv) {
         
         std::cout << "~~~~ [ dark-hpstr ]: Loading configuration ~~~~~~~~" << std::endl;
         
-        ConfigurePython cfg(argv[ptrpy], argv + ptrpy + 1, argc - ptrpy);
+        ConfigurePython cfg(argv[ptrpy], argv + ptrpy + 1, argc - ptrpy - 1);
 
         std::cout << "~~~~ [ dark-hpstr ]: Configuration load complete  ~~~~~~~~" << std::endl;
 
