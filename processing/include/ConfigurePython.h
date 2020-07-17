@@ -1,35 +1,20 @@
-/**
- * @file ConfigurePython.h
- * @brief Utility class that reads/executes a python script and creates a 
- *        Process object based on the input.
- * @author Omar Moreno, SLAC National Accelerator Laboratory
- */
+#ifndef PROCESSING_CONFIGUREPYTHON_H
+#define PROCESSING_CONFIGUREPYTHON_H
 
-#ifndef __CONFIGURE_PYTHON_H__
-#define __CONFIGURE_PYTHON_H__
-
-//------------//
-//   Python   //
-//------------//
-#include "Python.h"
-
-//----------------//
-//   C++ StdLib   //
-//----------------//
-#include <exception>
-#include <iostream>
-#include <stdexcept>
-#include <vector>
-
-//-----------//
-//   hpstr   //
-//-----------//
+/*~~~~~~~~~~~~~~~*/
+/*   processing   */
+/*~~~~~~~~~~~~~~~*/
 #include "Process.h"
-#include "ProcessorFactory.h"
-#include "ParameterSet.h"
+#include "Parameters.h"
 
+/**
+ * @class ConfigurePython
+ * @brief Utility class which reads/executes a python script and creates a 
+ *        Process object based on the input.
+ * @note The configuration language is documented in the overall processing 
+ *       package documentation.
+ */
 class ConfigurePython {
-
 
     public:
 
@@ -37,6 +22,18 @@ class ConfigurePython {
          * Class constructor.
          *
          * This method contains all the parsing and execution of the python script.
+         *
+         * @throw Exception if any necessary components of the python configuration
+         * are missing. e.g. The Process class or the different members of 
+         * the lastProcess object.
+         *
+         * The basic premis of this constructor is to execute the python
+         * configuration script by loading it into python as a module.
+         * Then, **after the script has been executed**, all of the parameters
+         * for the Process and EventProcessors are gathered from python.
+         * The fact that the script has been executed means that the user
+         * can get up to a whole lot of shenanigans that can help them
+         * make their work more efficient.
          *
          * @param pythonScript Filename location of the python script.
          * @param args Commandline arguments to be passed to the python script.
@@ -46,39 +43,35 @@ class ConfigurePython {
 
         /**
          * Class destructor.
+         *
+         * Does nothing at the moment.
          */
-        ~ConfigurePython();
-
-        /** Create a process object based on the python file information. */
-        Process* makeProcess();
-
-    private: 
-
-        /** The maximum number of events to process, if provided in python file. */
-        int event_limit_{-1};
-
-        /** List of input files to process in the job, if provided in python file. */
-        std::vector<std::string> input_files_;
-            
-        /** List of rules for shared libraries to load, if provided in python file. */
-        std::vector<std::string> libraries_;
-
-        /** List of rules for output ROOT file names, if provided in python file. */
-        std::vector<std::string> output_files_;
+        ~ConfigurePython() { }
 
         /**
-         * @struct ProcessorInfo
-         * @brief Represents the configuration of an EventProcessor in the job.
+         * Create a process object based on the python file information
+         *
+         * No python parsing actually happens in this function.
+         * All of the parsing is done in the constructor, this just
+         * copies that information from configuration_ into the Process object.
+         *
+         * @return ProcessHandle handle to process that is configured and ready to go
          */
-        struct ProcessorInfo {
-            std::string classname_;
-            std::string instancename_;
-            ParameterSet params_;
-        };
+        std::unique_ptr< Process > makeProcess();
 
-        /** The sequence of EventProcessor objects to be executed in order. */
-        std::vector<ProcessorInfo> sequence_;
+    private:
 
-};
+        /**
+         * The entire configuration for this process
+         *
+         * Contains all parameters that were passed in the python
+         * in a recursive manner. For example, this would contain
+         * a key called 'sequence' that has a value of a vector
+         * of Parmaeters, each one corresponding to a processor.
+         */
+        Parameters configuration_;
 
-#endif // __CONFIGURE_PYTHON_H__
+};  // ConfigurePython
+
+#endif  // PROCESSING_CONFIGURE_PYTHON_H
+

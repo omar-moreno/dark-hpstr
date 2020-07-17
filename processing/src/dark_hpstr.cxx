@@ -1,21 +1,15 @@
-/**
- *  @file   hpstr.cxx
- *  @brief  App used to create and analyze HPS DST files.
- *  @author Omar Moreno, SLAC National Accelerator Laboratory
- */
-
-//----------------//
+//~~~~~~~~~~~~~~~~//
 //   C++ StdLib   //
-//----------------//
+//~~~~~~~~~~~~~~~~//
 #include <csignal>
 #include <cstdlib>
 #include <cstring>
 #include <iostream>
 #include <stdexcept> 
 
-//-----------//
-//   hpstr   //
-//-----------//
+//~~~~~~~~~~~~~~~~//
+//   processing   //
+//~~~~~~~~~~~~~~~~//
 #include "ConfigurePython.h"
 
 using namespace std; 
@@ -38,21 +32,21 @@ int main(int argc, char **argv) {
 
     if (ptrpy == argc) {
         displayUsage(); 
-        printf("  ** No python script provided. **\n");
+        std::cout << "  ~~~ No python script provided (must end in .py). ~~~" << std::endl;
         return EXIT_FAILURE;
     }
 
     try {
         
-        std::cout << "---- [ hpstr ]: Loading configuration --------" << std::endl;
+        std::cout << "~~~~ [ dark-hpstr ]: Loading configuration ~~~~~~~~" << std::endl;
         
         ConfigurePython cfg(argv[ptrpy], argv + ptrpy + 1, argc - ptrpy);
 
-        std::cout << "---- [ hpstr ]: Configuration load complete  --------" << std::endl;
+        std::cout << "~~~~ [ dark-hpstr ]: Configuration load complete  ~~~~~~~~" << std::endl;
 
-        Process* p = cfg.makeProcess();
+        std::unique_ptr<Process> p = cfg.makeProcess();
         
-        std::cout << "---- [ hpstr ]: Process initialized.  --------" << std::endl;
+        std::cout << "~~~~ [ dark-hpstr ]: Process initialized.  ~~~~~~~~" << std::endl;
 
         // If Ctrl-c is used, immediately exit the application.
         struct sigaction act;
@@ -62,15 +56,13 @@ int main(int argc, char **argv) {
             return 1;
         }
 
-        std::cout << "---- [ hpstr ]: Starting event processing --------" << std::endl;
+        std::cout << "~~~~ [ dark-hpstr ]: Starting event processing ~~~~~~~~" << std::endl;
         
         p->run();
         
-        std::cout << "---- [ hpstr ]: Event processing complete  --------" << std::endl;
+        std::cout << "~~~~ [ dark-hpstr ]: Event processing complete  ~~~~~~~~" << std::endl;
 
     } catch (exception& e) { 
-        //std::cerr << "Error! [" << e.name() << "] : " << e.message() << std::endl;
-        //std::cerr << "  at " << e.module() << ":" << e.line() << " in " << e.function() << std::endl;
     
     } 
 
@@ -79,6 +71,6 @@ int main(int argc, char **argv) {
 }
 
 void displayUsage() {
-    printf("Usage: hpstr [application arguments] {configuration_script.py}"
+    printf("Usage: dark-hpstr [application arguments] {configuration_script.py}"
            " [arguments to configuration script]\n");
 }
