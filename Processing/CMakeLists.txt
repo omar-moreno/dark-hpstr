@@ -31,3 +31,5 @@ add_executable(dark-hpstr ${PROJECT_SOURCE_DIR}/src/dark_hpstr.cxx)
 
 target_link_libraries(dark-hpstr PRIVATE Event Processing)
 
+# Install the fire executable
+install(TARGETS dark-hpstr DESTINATION ${CMAKE_INSTALL_PREFIX}/bin)
