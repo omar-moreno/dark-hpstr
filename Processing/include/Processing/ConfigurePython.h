@@ -4,8 +4,8 @@
 /*~~~~~~~~~~~~~~~*/
 /*   processing   */
 /*~~~~~~~~~~~~~~~*/
-#include "Process.h"
-#include "Parameters.h"
+#include "Processing/Process.h"
+#include "Processing/Parameters.h"
 
 /**
  * @class ConfigurePython

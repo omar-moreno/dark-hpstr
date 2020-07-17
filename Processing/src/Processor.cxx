@@ -4,8 +4,8 @@
  * @author Omar Moreno, SLAC National Accelerator Laboratory
  */
 
-#include "Processor.h" 
-#include "ProcessorFactory.h"
+#include "Processing/Processor.h" 
+#include "Processing/ProcessorFactory.h"
 
 Processor::Processor(const std::string& name, Process& process) :
     process_ (process ), name_ { name } {

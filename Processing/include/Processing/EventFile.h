@@ -1,5 +1,5 @@
 /**
- * @file EventFile.h
+ * @file Processing/EventFile.h
  * @brief Class for managing io files.
  * @author Omar Moreno, SLAC National Accelerator Laboratory
  */
@@ -16,14 +16,14 @@
 //----------//
 //   LCIO   //
 //----------//
-#include <IO/LCReader.h>
-#include <IOIMPL/LCFactory.h>
-#include <EVENT/LCEvent.h>
+#include "IO/LCReader.h"
+#include "IOIMPL/LCFactory.h"
+#include "EVENT/LCEvent.h"
 
 //-----------//
 //   hpstr   //
 //-----------//
-#include "Event.h"
+#include "Event/Event.h"
 
 class EventFile { 
 
@@ -66,7 +66,7 @@ class EventFile {
         EVENT::LCEvent* lc_event_{nullptr}; 
         
         /** LCIO reader */
-        IO::LCReader* lc_reader_{IOIMPL::LCFactory::getInstance()->createLCReader()}; 
+        //IO::LCReader* lc_reader_{IOIMPL::LCFactory::getInstance()->createLCReader()}; 
 
         int entry_{0};  
 

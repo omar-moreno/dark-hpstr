@@ -4,9 +4,11 @@
  * @author Omar Moreno, SLAC National Accelerator Laboratory
  */
 
-#include "Process.h"
+#include "Processing/Process.h"
 
 Process::Process() {}
+
+Process::Process(const Parameters& configuration) {}
 
 void Process::run() {
 

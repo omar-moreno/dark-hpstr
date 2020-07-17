@@ -10,7 +10,7 @@
 //~~~~~~~~~~~~~~~~//
 //   processing   //
 //~~~~~~~~~~~~~~~~//
-#include "ConfigurePython.h"
+#include "Processing/ConfigurePython.h"
 
 using namespace std; 
 

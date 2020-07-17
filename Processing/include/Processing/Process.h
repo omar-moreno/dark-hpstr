@@ -1,5 +1,5 @@
 /**
- * @file Process.h
+ * @file Processing/Process.h
  * @brief Class which represents the process under execution.
  * @author Omar Moreno, SLAC National Accelerator Laboratory
  */
@@ -23,7 +23,7 @@
 //   hpstr   //
 //-----------//
 #include "Processor.h"
-#include "EventFile.h"
+#include "Processing/EventFile.h"
 
 class Process {
 
@@ -34,6 +34,12 @@ class Process {
          * @param passname Processing pass label
          */
         Process();
+
+            /**
+             * Class constructor.
+             * @param configuration Parameters to configure process with
+             */
+            Process(const Parameters& configuration);
 
         /**
          * Add an event processor to the linear sequence of processors to run in this job

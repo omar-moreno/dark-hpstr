@@ -5,7 +5,7 @@
  * @author Omar Moreno, SLAC National Accelerator Laboratory
  */
 
-#include "Event.h"
+#include "Event/Event.h"
 
 Event::Event() {
     

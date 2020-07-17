@@ -1,10 +1,3 @@
-/**
- * @file Event.h 
- * @brief Class defining methods used to access event information and data
- *        collections.
- * @author Omar Moreno, SLAC National Accelerator Laboratory
- */
-
 #ifndef __EVENT_H__
 #define __EVENT_H__
 
@@ -28,8 +21,8 @@
 //-----------//
 //   hpstr   //
 //-----------//
-#include "Collections.h"
-#include "EventHeader.h"
+#include "Event/Collections.h"
+#include "Event/EventHeader.h"
 
 class Event { 
 

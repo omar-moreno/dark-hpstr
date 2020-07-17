@@ -5,7 +5,7 @@
  * @author Omar Moreno, SLAC National Accelerator Laboratory
  */
 
-#include "ProcessorFactory.h"
+#include "Processing/ProcessorFactory.h"
 
 #include <dlfcn.h>
 

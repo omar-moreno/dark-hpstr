@@ -15,8 +15,8 @@
 //-----------//
 //   hpstr   //
 //-----------//
-#include "Event.h"
-#include "ParameterSet.h"
+#include "Event/Event.h"
+#include "Processing/Parameters.h"
 
 // Forward declarations
 class Process;
@@ -56,7 +56,7 @@ class Processor {
          * Callback for the Processor to configure itself from the given set of parameters.
          * @param parameters ParameterSet for configuration.
          */
-        virtual void configure(const ParameterSet& parameters) {
+        virtual void configure(Parameters& parameters) {
         }
 
         /**

@@ -1,9 +1,3 @@
-/**
- * @file EventHeader.h
- * @brief Class used to encapsulate event information.
- * @author Omar Moreno, SLAC National Accelerator Laboratory
- */
-
 #ifndef _EVENT_HEADER_H_
 #define _EVENT_HEADER_H_
 
@@ -14,12 +8,7 @@
 #include <iostream>
 #include <vector>
 
-//----------//
-//   ROOT   //
-//----------//
-#include <TObject.h>
-
-class EventHeader : public TObject { 
+class EventHeader { 
 
     public: 
         
@@ -28,16 +17,6 @@ class EventHeader : public TObject {
 
         /** Destructor */
         ~EventHeader();
-
-        /** Reset the EventHeader object */ 
-        void Clear(Option_t *option="");
-
-        /**
-         * Copy this object
-         *
-         * @param obj The target object.
-         */
-        void Copy(TObject& obj) const; 
 
         /** 
          * Set the event number. 
@@ -338,8 +317,6 @@ class EventHeader : public TObject {
 
         /** The RF time */
         double rf_times_[2]; 
-
-        ClassDef(EventHeader, 1);
 
 }; // EventHeader
 

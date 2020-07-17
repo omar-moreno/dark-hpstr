@@ -1,5 +1,5 @@
 
-#include "ConfigurePython.h"
+#include "Processing/ConfigurePython.h"
 
 /*~~~~~~~~~~~~*/
 /*   python   */
