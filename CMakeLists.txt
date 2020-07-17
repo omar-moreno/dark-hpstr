@@ -1,90 +1,43 @@
-# minimum cmake version
-cmake_minimum_required(VERSION 3.0)
 
-set(CMAKE_CXX_STANDARD 14)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_C_STANDARD 14)
-set(CMAKE_C_STANDARD_REQUIRED ON)
+# Set the minimum version of CMake that's required 
+cmake_minimum_required(VERSION 3.12)
 
+project(dark_hpstr VERSION 0.1
+                   DESCRIPTION "Analysis framework for the Heavy Photon Search experiment." 
+                   LANGUAGES CXX
+)
 
-if(NOT CMAKE_BUILD_TYPE)
-  set(CMAKE_BUILD_TYPE Release)
+# If an install location hasn't been set via CMAKE_INSTALL_PREFIX, set it to 
+# a reasonable default ($PWD/install).  
+if (CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
+    set(CMAKE_INSTALL_PREFIX ${CMAKE_CURRENT_SOURCE_DIR}/install CACHE PATH "" FORCE)
+    message(STATUS "Install directory set to ${CMAKE_INSTALL_PREFIX}")
 endif()
-set(CMAKE_CXX_FLAGS_RELEASE "-O3")
 
-# find the LCIO directory
-if (LCIO_DIR)
-    set(LCIO_INCLUDE_DIR "${LCIO_DIR}/include")
-    set(LCIO_LIBRARY "${LCIO_DIR}/lib/liblcio.so")
-    if (NOT EXISTS "${LCIO_DIR}")
-        message(FATAL_ERROR "Unable to find LCIO library")
-    endif()
-    message(STATUS "LCIO dir set to: ${LCIO_DIR}")
-    message(STATUS "LCIO include dir set to: ${LCIO_INCLUDE_DIR}")
-    message(STATUS "LCIO library set to: ${LCIO_LIBRARY}")
+# Set the default release type to "Release". If a release type is specified 
+# at the command line, it's respected.
+set(default_build_type "Release")
+if (NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
+  message(STATUS "Setting build type to '${default_build_type}' as none was specified.")
+  set(CMAKE_BUILD_TYPE "${default_build_type}" CACHE STRING "Choose the type of build." FORCE)
 endif()
-find_package(LCIO REQUIRED)
 
-# find Python installation
-find_package(PythonLibs 2.7 REQUIRED)
-message(STATUS "Python lib found at: ${PYTHON_LIBRARIES}")
-message(STATUS "Python include dir found at: ${PYTHON_INCLUDE_DIRS}")
-get_filename_component(PYTHON_LIBRARY_DIR ${PYTHON_LIBRARIES} DIRECTORY)
+# Load additional macro commands 
+list(APPEND CMAKE_MODULE_PATH ${dark_hpstr_SOURCE_DIR}/cmake/)
+message(STATUS ${CMAKE_MODULE_PATH})
 
-# find ROOT installation
-find_package(ROOT REQUIRED COMPONENTS Core RIO PyROOT Geom Eve Gui)
-message(STATUS "ROOT found at: ${ROOT_DIR}")
+# Load the BuildMacros module. If loaded correctly, the variable 
+# 'build_macros_found' will be set to the path of the module.  Otherwise, it
+# is set to NOTFOUND.
+include(BuildMacros RESULT_VARIABLE build_macros_found)
 
-# option to print extra module information during CMake config
-option(MODULE_DEBUG "Print extra module information during CMake config" OFF)
+# Set the default release type to "Release". If a release type is specified 
+# at the command line, it's respected.
+set(default_build_type "Release")
+if (NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
+  message(STATUS "Setting build type to '${default_build_type}' as none was specified.")
+  set(CMAKE_BUILD_TYPE "${default_build_type}" CACHE STRING "Choose the type of build." FORCE)
+endif()
 
-# add dir with extra CMake modules 
-list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake/Modules/)
-
-# import macro for declaring modules
-include(MacroModule)
-
-# import macro for declaring external dependencies
-include(MacroExtDeps)
-
-set(MODULES event processing processors)
-
-# build each module in the list
-foreach(module ${MODULES})
-  message(STATUS "Adding module: ${module}")
-  add_subdirectory(${module})
-endforeach()
-
-# configure and generate documentation using doxygen
-#option(INSTALL_DOC "Set to ON to generate documentation using doxygen" OFF)
-#message(STATUS "Doxygen documentation: ${INSTALL_DOC}")
-#if(INSTALL_DOC)
-
-    # message that documentation is off for this build
-    #    message(STATUS "Doxygen documentation will be generated")
-
-    # find doxygen
-    #    find_program(DOXYGEN_EXECUTABLE doxygen ${PATH})
-    #    if(DOXYGEN_EXECUTABLE-NOTFOUND)
-    #        message(FATAL_ERROR "The doxygen executable was not found")
-    #    endif()
-
-    # find dot
-    #find_program(DOT_EXECUTABLE dot ${PATH})
-    #if(DOT_EXECUTABLE-NOTFOUND)
-    #    message(FATAL_ERROR "The dot executable was not found.")
-    #endif()
-    
-    # configure doxygen file
-    #    configure_file(${PROJECT_SOURCE_DIR}/docs/doxygen.conf.in ${PROJECT_SOURCE_DIR}/docs/doxygen.conf)
-
-    # generate the documentation
-    #    install(CODE "execute_process(COMMAND doxygen ${PROJECT_SOURCE_DIR}/docs/doxygen.conf WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})")
-
-    # documentation generation target 
-    #    add_custom_target(doc COMMAND doxygen ${PROJECT_SOURCE_DIR}/docs/doxygen.conf)
-
-    #endif()
-
-# info message about install prefix
-message(STATUS "hpstr will be installed to: ${CMAKE_INSTALL_PREFIX}")
+add_subdirectory(Event)
+add_subdirectory(Processing)
