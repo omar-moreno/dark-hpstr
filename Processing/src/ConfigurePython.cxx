@@ -15,6 +15,7 @@
 #include <iostream>
 #include <cstring>
 
+#include "Processing/Exception.h"
 
 
 /**
@@ -68,10 +69,10 @@ static std::map< std::string, std::any > getMembers(PyObject* object) {
     PyObject* dictionary{PyObject_GetAttrString(object, "__dict__")};
 
     if ( dictionary == 0 ) {
-        //EXCEPTION_RAISE(
-        //        "ObjFail",
-        //        "Python Object does not have __dict__ member"
-        //        );
+        EXCEPTION_RAISE(
+                "ObjFail",
+                "Python Object does not have __dict__ member"
+                );
     }
 
     PyObject *key(0), *value(0);
@@ -202,23 +203,23 @@ ConfigurePython::ConfigurePython(const std::string& pythonScript, char* args[], 
 
     if (script == 0) {
         PyErr_Print();
-        //EXCEPTION_RAISE("ConfigureError", "Problem loading python script");
+        EXCEPTION_RAISE("ConfigureError", "Problem loading python script");
     }
 
-    PyObject* pCMod = PyObject_GetAttrString(script, "ldmxcfg");
+    PyObject* pCMod = PyObject_GetAttrString(script, "darkcfg");
     Py_DECREF(script); //don't need the script anymore
     if (pCMod == 0) {
         PyErr_Print();
-        //EXCEPTION_RAISE("ConfigureError", "Problem loading python script");
+        EXCEPTION_RAISE("ConfigureError", "Problem loading python script");
     }
 
     PyObject* pProcessClass = PyObject_GetAttrString(pCMod, "Process");
     Py_DECREF(pCMod); //don't need the config module anymore
     if (pProcessClass == 0) {
         PyErr_Print();
-        //EXCEPTION_RAISE("ConfigureError", 
-        //        "Process object not defined. This object is required to run ldmx-app."
-        //        );
+        EXCEPTION_RAISE("ConfigureError", 
+                "Process object not defined. This object is required to run ldmx-app."
+        );
     }
 
     PyObject* pProcess = PyObject_GetAttrString(pProcessClass, "lastProcess");
@@ -226,14 +227,14 @@ ConfigurePython::ConfigurePython(const std::string& pythonScript, char* args[], 
     if (pProcess == 0) {
         //wasn't able to get lastProcess class member
         PyErr_Print();
-        //EXCEPTION_RAISE("ConfigureError", 
-        //        "Process object not defined. This object is required to run."
-        //        );
+        EXCEPTION_RAISE("ConfigureError", 
+                "Process object not defined. This object is required to run."
+                );
     } else if ( pProcess == Py_None ) {
         //lastProcess was left undefined
-        //EXCEPTION_RAISE("ConfigureError", 
-        //        "Process object not defined. This object is required to run."
-        //        );
+        EXCEPTION_RAISE("ConfigureError", 
+                "Process object not defined. This object is required to run."
+                );
     }
 
     //okay, now we have fully imported the script and gotten the handle
@@ -250,10 +251,10 @@ ConfigurePython::ConfigurePython(const std::string& pythonScript, char* args[], 
     //close up python interpreter
     if ( Py_FinalizeEx() < 0 ) {
         PyErr_Print();
-        //EXCEPTION_RAISE(
-        //        "PyError",
-        //        "I wasn't able to close up the python interpreter!"
-        //        );
+        EXCEPTION_RAISE(
+                "PyError",
+                "I wasn't able to close up the python interpreter!"
+                );
     }
 }
 
