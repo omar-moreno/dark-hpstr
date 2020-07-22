@@ -18,18 +18,18 @@ setup_lcio_target()
 
 # Setup the library
 setup_library(name Processing
-    dependencies DARK::Event ROOT::Core ROOT::TreePlayer Python3::Python LCIO::Interface)
+    dependencies LCIO::Interface DARK::Event ROOT::Core ROOT::TreePlayer Python3::Python)
 
 # Set some target properties
 set_target_properties(Processing PROPERTIES 
-    CXX_STANDARD 17
+    CXX_STANDARD 14
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS NO
 )
 
 add_executable(dark-hpstr ${PROJECT_SOURCE_DIR}/src/dark_hpstr.cxx)
 
-target_link_libraries(dark-hpstr PRIVATE Event Processing)
+target_link_libraries(dark-hpstr PUBLIC Event Processing)
 
 # Install the fire executable
 install(TARGETS dark-hpstr DESTINATION ${CMAKE_INSTALL_PREFIX}/bin)
