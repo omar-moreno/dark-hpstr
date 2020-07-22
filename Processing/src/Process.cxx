@@ -8,7 +8,11 @@
 
 Process::Process() {}
 
-Process::Process(const Parameters& configuration) {}
+Process::Process(const Parameters& configuration) {
+
+    input_files_ = configuration.getParameter< std::vector< std::string > >("input_files"); 
+    output_files_ = configuration.getParameter< std::vector< std::string > >("output_files"); 
+}
 
 void Process::run() {
 
@@ -28,12 +32,15 @@ void Process::run() {
             std::cout << "---- [ hpstr ][ Process ]: Processing file " 
                       << ifile << std::endl;
 
-            // Open the output file if an output file path has been specified.
-            EventFile* file{nullptr};  
-            if (!output_files_.empty()) { 
+            // Open the input file to process.  If the input file can't be 
+            // opened, throw an exception.
+            EventFile* file{nullptr}; 
+            if (!output_files_.empty()) {
                 file = new EventFile(ifile, output_files_[cfile]);
-                file->setupEvent(&event);  
-            }
+            } else {
+                // Throw an exception
+            } 
+            file->setupEvent(&event); 
 
             TTree* tree = event.getTree(); 
             // first, notify everyone that we are starting

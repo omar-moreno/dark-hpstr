@@ -16,14 +16,14 @@
 //----------//
 //   LCIO   //
 //----------//
-#include "IO/LCReader.h"
-#include "IOIMPL/LCFactory.h"
 #include "EVENT/LCEvent.h"
 
 //-----------//
 //   hpstr   //
 //-----------//
 #include "Event/Event.h"
+
+#include "IO/LCReader.h"
 
 class EventFile { 
 
@@ -66,7 +66,7 @@ class EventFile {
         EVENT::LCEvent* lc_event_{nullptr}; 
         
         /** LCIO reader */
-        //IO::LCReader* lc_reader_{IOIMPL::LCFactory::getInstance()->createLCReader()}; 
+        IO::LCReader* lc_reader_{nullptr}; 
 
         int entry_{0};  
 

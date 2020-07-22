@@ -6,15 +6,22 @@
 
 #include "Processing/EventFile.h"
 
-EventFile::EventFile(const std::string ifilename, const std::string ofilename) { 
+#include "IOIMPL/LCFactory.h"
 
+
+EventFile::EventFile(const std::string input_file, const std::string out_file) { 
+    
+    // Instantiate the LCIO reader
+    lc_reader_ = IOIMPL::LCFactory::getInstance()->createLCReader();
+     
     // Open the input LCIO file. If the input file can't be opened, throw an 
     // exception. 
-    //lc_reader_->open(ifilename); 
-
+    lc_reader_->open(input_file); 
+    
     // Open the output ROOT file
-    ofile_ = new TFile(ofilename.c_str(), "recreate");
+    ofile_ = new TFile(out_file.c_str(), "recreate");
 }
+
 
 EventFile::~EventFile() {}
 
@@ -26,7 +33,7 @@ bool EventFile::nextEvent() {
     }
    
     // Read the next event.  If it doesn't exist, stop processing events.
-    //if ((lc_event_ = lc_reader_->readNextEvent())  == 0) return false;
+    if ((lc_event_ = lc_reader_->readNextEvent())  == 0) return false;
     
     event_->setLCEvent(lc_event_); 
     event_->setEntry(entry_); 
@@ -43,7 +50,7 @@ void EventFile::setupEvent(Event* event) {
 void EventFile::close() { 
     
     // Close the LCIO file that was being processed
-    //lc_reader_->close();
+    lc_reader_->close();
 
     // Write the ROOT tree to disk
     event_->getTree()->Write();  
